@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>DM Tool</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Do not add `link` tags-->
+      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+      <!-- Do not add `script` tags-->
+      <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+      <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+    </head>
+
+    <body class="container-fluid">
+      <h1>DM Planner</h1>
+      <!-- AUTH STUFF -->
+
+      <form id="sign-in" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Sign in!</h3>
+          <label>Email Address:</label>
+          <input type="email" name="credentials[email]" id="sign-in-email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label>Password:</label>
+          <input type="password" name="credentials[password]" id="sign-in-password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Sign in!" class="btn btn-default">
+          <input type="button" value="Need to Sign Up" class="btn btn-default" id="newUser">
+          <p class="hidden" id="sign-in-error">Email or Password Incorrect</p>
+        </div>
+      </form>
+
+      <form id="sign-out" class="hidden">
+        <div class="form-group">
+          <h3 class="legend"></h3>
+          <input type="submit" name="submit" value="Sign out!" class="btn btn-default">
+        </div>
+        <div class="form-group">
+          <input type="button" value="Change Password" class="btn btn-default" id="chngPwd">
+        </div>
+        <div class="form-group">
+          <input type="button" value="Create Campaigns and Encounters" class="btn btn-default" id="crtCamp">
+          <input type="button" value="View Campaigns and Encounters" class="btn btn-default" id="viewCamp">
+          <input type="button" value="Edit Campaigns and Encounters" class="btn btn-default" id="editCamp">
+          <input type="button" value="Delete Campaigns and Encounters" class="btn btn-default" id="deleteCamp">
+        </div>
+      </form>
+
+      <form id="sign-up" class="">
+        <div>
+        <div class="form-group">
+          <h3 class="legend">Sign up!</h3>
+          <label>Email Address:</label>
+          <input type="email" name="credentials[email]" id="sign-up-email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label>Password:</label>
+          <input type="password" name="credentials[password]" id="sign-up-password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password:</label>
+          <input type="password" name="credentials[password_confirmation]" id="sign-up-password-confirmation" placeholder="Confirm Password">
+        </div>
+      </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Sign up!" class="btn btn-default">
+          <input type="button" value="Already a User" class="btn btn-default" id="oldUser">
+          <p class="hidden" id="sign-up-error">Email Taken or Passwords Don't Match</p>
+        </div>
+      </form>
+
+      <form id="change-password" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Change Password!</h3>
+          <label>Old Password:</label>
+          <input type="password" name="passwords[old]" value="" placeholder="Old Password">
+        </div>
+        <div class="form-group">
+          <label>New Password:</label>
+          <input type="password" name="passwords[new]" value="" placeholder="New Password">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Change Password" class="btn btn-default">
+          <p class="hidden" id="change-password-success">Password Changed</p>
+          <p class="hidden" id="change-password-failure">Incorrect Info</p>
+        </div>
+      </form>
+
+      <h1 class="encnt-update-message hidden red">UPDATED ENCOUNTER SUCCESSFULLY!</h1>
+      <h1 class="camp-update-message hidden red">UPDATED CAMPAIGN SUCCESSFULLY!</h1>
+      <h1 class="encnt-deleted-message hidden red">DELETED ENCOUNTER SUCCESSFULLY!</h1>
+      <h1 class="camp-deleted-message hidden red">DELETED CAMPAIGN SUCCESSFULLY!</h1>
+      <h1 class="encnt-created-message hidden red">CREATED ENCOUNTER SUCCESSFULLY!</h1>
+      <h1 class="camp-created-message hidden red">CREATED CAMPAIGN SUCCESSFULLY!</h1>
+      <h1 class="pswd-change-message hidden red">PASSWORD CHANGED SUCCESSFULLY!</h1>
+      <div class="updated hidden">
+        <img src="https://raw.githubusercontent.com/ChrisAK/wdi-project-2-dm-tool-front/master/assets/images/fat-dragon.png" alt="Fat Dragon">
+      </div>
+      <div class="deleted hidden">
+        <img src="https://raw.githubusercontent.com/ChrisAK/wdi-project-2-dm-tool-front/master/assets/images/sad-dragon.png" alt="Sad Dragon">
+      </div>
+      <div class="created hidden">
+        <img src="https://raw.githubusercontent.com/ChrisAK/wdi-project-2-dm-tool-front/master/assets/images/happy-dragon.png" alt="Happy Dragon">
+      </div>
+      <div class="changed hidden">
+        <img src="https://raw.githubusercontent.com/ChrisAK/wdi-project-2-dm-tool-front/master/assets/images/thumbs-up-dragon.jpg" alt="Thumbs Up Dragon">
+      </div>
+
+      <!-- Get stuff buttons -->
+      <div class="print-campaigns"></div>
+      <div class="gray">
+      <form id="get-campaigns" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Get Campaigns</h3>
+          <button type="button" name="button" class="btn btn-default">Get Campaigns</button>
+        </div>
+      </form>
+      <div class="print-encounters"></div>
+      <form id="get-encounters" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Get Encounters</h3>
+          <label>Campaign Name:</label>
+          <input type="text" name ="campaign[name]" id="reference-name" placeholder="Campaign Name">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Get Encounters" class="btn btn-default">
+        </div>
+      </form>
+    </div>
+
+      <!-- Make stuff forms -->
+      <div class="gray">
+      <form id="create-campaign" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Create a Campaign!</h3>
+          <label>Campaign Name:</label>
+            <input type="text" name="campaign[name]" value="" id="campaign-id" placeholder="Campaign Name">
+        </div>
+        <div class="form-group">
+          <label>Scheduled Day:</label>
+            <input type="text" name="campaign[scheduled_day]" value="" id="campaign-day" placeholder="Scheduled Day">
+        </div>
+        <div class="form-group">
+            <p class="hidden" id="createCamp-success"></p>
+            <p class="hidden" id="createCamp-error"> ERROR! SHIT FUCKED UP!</p>
+            <input type="submit" name="submit" value="Create Campaign" class="btn btn-default">
+        </div>
+      </form>
+
+
+      <form id="create-encounter" class="hidden col">
+        <div class="form-group">
+          <h3 class="legend">Create an Encounter!</h3>
+          <label>Campaign name:</label>
+          <input type="text" name="encounter[campaign_id]" id="encounter-campaignID" placeholder="Reference ID">
+        </div>
+        <div class="form-group">
+          <label>Encounter Name:</label>
+          <input type="text" name="encounter[name]" id="encounter-name" placeholder="Encounter Name">
+        </div>
+        <div class="form-group">
+          <label>Challenge Rating:</label>
+          <input type="text" name="encounter[CR]" id="encounter-cr" placeholder="Encounter CR">
+        </div>
+        <div class="form-group">
+          <label>Books Used:</label>
+          <input type="text" name="encounter[books]" id="encounter-books" placeholder="Books Used">
+        </div>
+        <div class="form-group">
+          <label>Encounter Description:</label>
+          <textarea form="create-encounter" name="encounter[description]" id="encounter-description" rows="5" cols="40" placeholder="Write your encounter's description here"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" name="submit" value="Create Encounter" class="btn btn-default">
+        </div>
+      </form>
+    </div>
+
+      <!-- UPDATE STUFF -->
+      <div class="gray">
+      <form id="update-campaign" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Update Campaign</h3>
+          <label>Campaign Name:</label>
+          <input type="text" name="campaign[name]" id="campname" placeholder="Campaign Name">
+        </div>
+        <div class="form-group">
+          <label>Updated Name:</label>
+          <input type="text" id="updateName" placeholder="New Name">
+        </div>
+        <div class="form-group">
+          <label>Updated Day:</label>
+          <input type="text" id="updateDay" placeholder="New Day">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Update Campaign" class="btn btn-default">
+        </div>
+      </form>
+
+      <form id="update-encounter" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Update Encounter</h3>
+          <label>Campaign Name:</label>
+          <input type="text" name="campaign[name]" id="campname-encounterUp" placeholder="Campaign Name">
+        </div>
+        <div class="form-group">
+          <label>Encounter Name:</label>
+          <input type="text" name="encounter[name]" id="encountname-encounterUp" placeholder="Encounter Name">
+        </div>
+        <div class="form-group">
+          <label>Updated Name:</label>
+          <input type="text" name="encounter[name]" id="updateName-encountUp" placeholder="New Name">
+        </div>
+        <div class="form-group">
+          <label>Updated CR:</label>
+          <input type="text" name="encounter[CR]" id="updateCR" placeholder="New CR">
+        </div>
+        <div class="form-group">
+          <label>Updated Books:</label>
+          <input type="text" name="encounter[books]" id="updateBooks" placeholder="New Books">
+        </div>
+        <div class="form-group">
+          <label>Updated Description:</label>
+          <textarea form="update-encounter" name="encounter[description]" id="updateDesc" rows="5" cols="40" placeholder="Write your new description here"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Update Encounter" class="btn btn-default">
+        </div>
+      </form>
+    </div>
+
+      <!-- DELETE STUFF -->
+      <div class="gray">
+      <form id="delete-campaign" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Delete a Campaign</h3>
+          <label>Campaign Name:</label>
+          <input type="text" name="campaign[name]" id="camp-delete" placeholder="Campaign Name">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Delete Campaign" class="btn btn-default">
+        </div>
+      </form>
+
+      <form id="delete-encounter" class="hidden">
+        <div class="form-group">
+          <h3 class="legend">Delete an Encounter</h3>
+          <label>Campaign Name:</label>
+          <input type="text" name="campaign[name]" id="campName-delete" placeholder="Campaign Name">
+        </div>
+        <div class="form-group">
+          <label>Encounter Name</label>
+          <input type="text" name="encounter[name]" id="encountName-delete" placeholder="Encounter Name">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Delete Encounter" class="btn btn-default">
+        </div>
+      </form>
+    </div>
+
+    <!-- DISPLAYS -->
+<table id='campaignTable' class='hidden gray'>
+  <tr>
+    <th>Name</th>
+    <th>Scheduled Day</th>
+  </tr>
+</table>
+
+<table id='encounterTable' class='hidden gray'>
+  <tr>
+    <th>Name</th>
+    <th>CR</th>
+    <th>Books</th>
+    <th>Description</th>
+  </tr>
+</table>
+
+
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
